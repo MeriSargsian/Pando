@@ -27,6 +27,11 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
@@ -40,8 +45,18 @@ h1, h2, h3 {
 }
 
 /* Link accents */
+a {
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
 a:hover {
   color: var(--primary);
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in oklab, var(--primary) 70%, white);
+  outline-offset: 3px;
 }
 
 /* Section title with subtle gold divider */

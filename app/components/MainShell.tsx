@@ -11,7 +11,7 @@ export default function MainShell({ children }: PropsWithChildren) {
   return (
     <main
       id="main"
-      className={`min-h-[60vh] rounded-lg border bg-white/90 shadow-sm backdrop-blur dark:bg-zinc-950/60 ${padding}`}
+      className={`min-h-[60vh] rounded-lg border bg-white/90 text-zinc-950 shadow-sm backdrop-blur dark:bg-zinc-950/60 dark:text-[var(--foreground)] ${padding}`}
     >
       {children}
     </main>
