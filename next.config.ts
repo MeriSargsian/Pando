@@ -4,8 +4,8 @@ const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig: NextConfig = {
   output: "export",
-  basePath: isProd ? "/pando-encino-DT" : undefined,
-  assetPrefix: isProd ? "/pando-encino-DT/" : undefined,
+  basePath: isProd ? "/Pando" : undefined,
+  assetPrefix: isProd ? "/Pando/" : undefined,
   trailingSlash: true,
   images: {
     unoptimized: true,
