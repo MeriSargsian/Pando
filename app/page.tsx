@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import heroImage from "@/data/Pando_Acc_Encino.jpeg";
+import pandoSoCalConnectionsImage from "@/data/PandoDays-Schools-Map_Mar25.jpg";
 import { useEffect, useMemo, useState } from "react";
 
 export default function Home() {
@@ -49,6 +50,42 @@ export default function Home() {
 
   const [query, setQuery] = useState("");
   const [activeSectionId, setActiveSectionId] = useState<string>(sections[0]?.id ?? "about");
+  const [activeRiskId, setActiveRiskId] = useState<string | null>(null);
+
+  const risks = useMemo(
+    () => [
+      {
+        id: "heat",
+        title: "Heat",
+        description:
+          "High summer land surface temperatures exceed 110°F, driven by impervious surfaces and limited tree canopy (approximately 14.8%). Heat exposure is especially concerning for older adults, who make up nearly one-quarter of the population.",
+      },
+      {
+        id: "air-quality",
+        title: "Air Quality",
+        description:
+          "Annual PM2.5 concentrations average around 10.67 μg/m³, exceeding recommended health guidelines. Heat events and wildfire smoke can intensify respiratory risks, with asthma prevalence already elevated relative to ideal health benchmarks.",
+      },
+      {
+        id: "flooding",
+        title: "Flooding & Sea Level Rise",
+        description:
+          "Between 13.5% and 15.3% of properties fall within current or projected 100-year flood zones. Coastal exposure, watershed connections, and sea level rise increase the likelihood of future flood impacts, particularly during extreme storms.",
+      },
+      {
+        id: "wildfire",
+        title: "Wildfire",
+        description:
+          "While per-home wildfire risk remains relatively low, the surrounding landscape exhibits high wildfire hazard due to vegetation type, regional fire conditions, and Santa Ana wind events. Smoke exposure remains a recurring concern even when structures are not directly threatened.",
+      },
+    ],
+    [],
+  );
+
+  const activeRisk = useMemo(() => {
+    if (!activeRiskId) return null;
+    return risks.find((r) => r.id === activeRiskId) ?? null;
+  }, [activeRiskId, risks]);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -110,6 +147,21 @@ export default function Home() {
     for (const el of elements) observer.observe(el);
     return () => observer.disconnect();
   }, [sections]);
+
+  useEffect(() => {
+    if (!activeRiskId) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActiveRiskId(null);
+    };
+
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [activeRiskId]);
 
   return (
     <div className="page-layout">
@@ -198,6 +250,21 @@ export default function Home() {
               <li>Nature-based and multi-benefit resilience strategies</li>
               <li>Accessibility for residents, students, planners, and non-technical users</li>
             </ul>
+
+            <h4 className="about-subtitle">Pando SoCal Connections</h4>
+            <p>
+              Pando SoCal is a regional network of school, university, public agency, and special project partners across
+              Southern California.
+            </p>
+            <div className="about-media">
+              <Image
+                src={pandoSoCalConnectionsImage}
+                alt="Map showing Pando SoCal connections across Southern California"
+                width={1400}
+                height={750}
+                className="about-image"
+              />
+            </div>
           </div>
         </section>
 
@@ -232,41 +299,17 @@ export default function Home() {
             <p>Pando Populus identifies several interconnected environmental risks that shape vulnerability in the study area.</p>
 
             <div className="grid">
-              <div className="card">
-                <h4>Heat</h4>
-                <p>
-                  High summer land surface temperatures exceed 110°F, driven by impervious surfaces and limited tree
-                  canopy (approximately 14.8%). Heat exposure is especially concerning for older adults, who make up
-                  nearly one-quarter of the population.
-                </p>
-              </div>
-
-              <div className="card">
-                <h4>Air Quality</h4>
-                <p>
-                  Annual PM2.5 concentrations average around 10.67 μg/m³, exceeding recommended health guidelines.
-                  Heat events and wildfire smoke can intensify respiratory risks, with asthma prevalence already
-                  elevated relative to ideal health benchmarks.
-                </p>
-              </div>
-
-              <div className="card">
-                <h4>Flooding &amp; Sea Level Rise</h4>
-                <p>
-                  Between 13.5% and 15.3% of properties fall within current or projected 100-year flood zones. Coastal
-                  exposure, watershed connections, and sea level rise increase the likelihood of future flood impacts,
-                  particularly during extreme storms.
-                </p>
-              </div>
-
-              <div className="card">
-                <h4>Wildfire</h4>
-                <p>
-                  While per-home wildfire risk remains relatively low, the surrounding landscape exhibits high wildfire
-                  hazard due to vegetation type, regional fire conditions, and Santa Ana wind events. Smoke exposure
-                  remains a recurring concern even when structures are not directly threatened.
-                </p>
-              </div>
+              {risks.map((risk) => (
+                <button
+                  key={risk.id}
+                  type="button"
+                  className="card card-button"
+                  onClick={() => setActiveRiskId(risk.id)}
+                >
+                  <h4>{risk.title}</h4>
+                  <p>{risk.description}</p>
+                </button>
+              ))}
             </div>
           </div>
         </section>
@@ -388,6 +431,30 @@ export default function Home() {
           </div>
         </footer>
       </main>
+
+      {activeRisk ? (
+        <div
+          className="modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label={activeRisk.title}
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setActiveRiskId(null);
+          }}
+        >
+          <div className="modal">
+            <div className="modal-header">
+              <h3 className="modal-title">{activeRisk.title}</h3>
+              <button type="button" className="modal-close" onClick={() => setActiveRiskId(null)} aria-label="Close">
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>{activeRisk.description}</p>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
