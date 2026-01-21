@@ -1,0 +1,77 @@
+{
+  "project": {
+    "title": "Gallery",
+    "kicker": "PANDO POPULUS • DIGITAL TWIN FRAMEWORK",
+    "subtitle": "A visual story of the tools, workflows, and iterations used to transform the Encino site into a digital twin.",
+    "chips": ["Site", "Data Layers", "Rhino", "Unreal Engine", "Prototype Tools"]
+  },
+  "sections": [
+    {
+      "id": "aura",
+      "tool": "Aura",
+      "subtitle": "Data Mapping & Urban Analysis",
+      "description": "Aura is a 3D mapping and visualization platform used in our Digital Twin workflow. It helps us layer environmental and social data to understand urban patterns and inform design decisions.",
+      "images": [
+        { "src": "images/Aura.png", "alt": "Aura layered map view" },
+        { "src": "images/Aura2.png", "alt": "Crime hotspots overlay" },
+        { "src": "images/Aura3.png", "alt": "Heatmap gradient and density" }
+      ],
+      "toggles": [
+        {
+          "title": "Data Exploration",
+          "items": [
+            "Explored different map views and visualization modes.",
+            "Compared datasets using transparency and visibility controls.",
+            "Observed density patterns through gradients and clusters."
+          ]
+        },
+        {
+          "title": "Layers & Datasets",
+          "items": ["Crime Hotspots", "Los Angeles CAMS (LATTC)", "Transit-related spatial data"]
+        },
+        {
+          "title": "Insights & Outcomes",
+          "items": [
+            "Identified relationships between social and environmental conditions.",
+            "Learned how layering data can reveal community patterns and impacts.",
+            "Captured screenshots and notes for future analysis and presentations."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "polycam",
+      "tool": "Polycam",
+      "subtitle": "Site Capture & Reality Data",
+      "description": "Polycam supported real-world documentation through 360° scans and photo references, helping validate scale, terrain features, and material cues for modeling and visualization.",
+      "images": [
+        { "src": "/images/PolyCam.png", "alt": "Site capture using phone" },
+        { "src": "/images/PolyCam2.png", "alt": "360 scan reference view" }
+      ],
+      "toggles": [
+        {
+          "title": "Site Documentation",
+          "items": [
+            "Captured 360° scans to document real-world conditions.",
+            "Focused on slopes, vegetation, retaining walls, and pathways.",
+            "Recorded areas missing from the contour model for reference."
+          ]
+        },
+        {
+          "title": "Accuracy & Validation",
+          "items": [
+            "Used scans to verify terrain and vegetation density assumptions.",
+            "Checked scale and spatial relationships against digital models."
+          ]
+        },
+        {
+          "title": "Integration Workflow",
+          "items": [
+            "Used scans/photos as reference for Rhino modeling.",
+            "Generated texture references to improve realism in Unreal Engine."
+          ]
+        }
+      ]
+    }
+  ]
+}

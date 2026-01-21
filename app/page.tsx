@@ -4,6 +4,8 @@ import Image from "next/image";
 import heroImage from "@/data/Pando_Acc_Encino.jpeg";
 import pandoSoCalConnectionsImage from "@/data/PandoDays-Schools-Map_Mar25.jpg";
 import { useEffect, useMemo, useState } from "react";
+import galleryDB from "./src/data/galleryData.json";
+import ToolGallerySection from "@/app/components/ToolGallerySection";
 
 export default function Home() {
   const sections = useMemo(
@@ -44,9 +46,17 @@ export default function Home() {
         text:
           "Pando Populus helps residents understand neighborhood risks, helps planners identify high-impact multi-benefit interventions, helps communities prioritize resilience investments, and helps decision-makers balance ecological protection with human needs.",
       },
+      {
+        id: "gallery",
+        title: "Gallery",
+        text:
+          "A visual walk-through of the tools and workflows used to build the Encino digital twin—from layered mapping and site capture to terrain modeling and real-time visualization.",
+      },
+
     ],
     [],
   );
+
 
   const [query, setQuery] = useState("");
   const [activeSectionId, setActiveSectionId] = useState<string>(sections[0]?.id ?? "about");
@@ -424,6 +434,27 @@ export default function Home() {
             </p>
           </div>
         </section>
+
+        <section id="gallery" className="section reveal">
+           <div className="container">
+            <div>
+              <h1>Gallery</h1>
+              <p>
+                A visual walk-through of the tools and workflows used to build the Encino digital twin—from layered mapping and
+                site capture to terrain modeling and real-time visualization.
+              </p>
+            </div>
+
+            {/* Tool Sections */}
+            <div className="grid" style={{ display: "inline-block" }}>
+              {(galleryDB.sections ?? []).map((toolSection: any) => (
+                <ToolGallerySection key={toolSection.id} section={toolSection} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+
 
         <footer className="footer">
           <div className="container">
