@@ -1,0 +1,52 @@
+.gallery-scroll {
+  display: flex;
+  gap: 28px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+
+  padding-bottom: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gallery-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.gallery-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.gallery-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.25);
+  border-radius: 4px;
+}
+
+.gallery-imgcard {
+  flex: 0 0 320px;        
+  scroll-snap-align: start;
+}
+
+.gallery-scroll-wrapper {
+  position: relative;
+}
+
+.gallery-scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+
+  background: rgba(0,0,0,0.55);
+  color: white;
+  cursor: pointer;
+}
+
+.gallery-scroll-btn.left { left: -18px; }
+.gallery-scroll-btn.right { right: -18px; }

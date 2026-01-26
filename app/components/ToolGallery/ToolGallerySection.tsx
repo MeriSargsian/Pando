@@ -1,6 +1,6 @@
 "use client";
-
 import { useEffect, useState } from "react";
+import "./ToolGallerySection.css";
 
 type GalleryImage = {
   src: string;

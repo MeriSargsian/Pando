@@ -5,7 +5,7 @@ import heroImage from "@/data/Pando_Acc_Encino.jpeg";
 import pandoSoCalConnectionsImage from "@/data/PandoDays-Schools-Map_Mar25.jpg";
 import { useEffect, useMemo, useState } from "react";
 import galleryDB from "./src/data/galleryData.json";
-import ToolGallerySection from "@/app/components/ToolGallerySection";
+import ToolGallerySection from "@/app/components/ToolGallery/ToolGallerySection";
 
 export default function Home() {
   const sections = useMemo(
