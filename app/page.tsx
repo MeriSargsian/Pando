@@ -435,7 +435,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="gallery" className="section reveal">
+        <section id="gallery" className="section reveal" style={{opacity: 1,transform: "none",filter: "none"}}>
            <div className="container">
             <div>
               <h1>Gallery</h1>

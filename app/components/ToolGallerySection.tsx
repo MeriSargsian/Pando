@@ -17,7 +17,6 @@ type ToolSection = {
   tool: string;
   subtitle: string;
   description: string;
-  tags?: string[];
   images?: GalleryImage[];
   toggles?: GalleryToggle[];
 };
@@ -25,93 +24,98 @@ type ToolSection = {
 export default function ToolGallerySection({ section }: { section: ToolSection }) {
   const [openImage, setOpenImage] = useState<GalleryImage | null>(null);
 
+  const isOpen = openImage !== null;
+
   useEffect(() => {
-    if (!openImage) return;
+    if (!isOpen) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpenImage(null);
     };
 
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
     window.addEventListener("keydown", onKeyDown);
     return () => {
-      document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [openImage]);
+  }, [isOpen]);
 
   return (
-    <div className="card gallery-tool" style={{marginBottom: "6%"}}>
-      {/* Header */}
-      <div className="gallery-tool-header">
-        <div>
-          <h3 className="gallery-tool-name">{section.tool}</h3>
-          <p className="gallery-tool-subtitle">{section.subtitle}</p>
-        </div>
-      </div>
+    <div style={{ marginBottom: "6%" }} className="gallery-section-wrapper">
 
-      {/* Description */}
-      <p className="gallery-tool-desc">{section.description}</p>
+      {/* ===== NORMAL SECTION ===== */}
+      {!isOpen && (
+        <div className="card gallery-tool">
+          <div className="gallery-tool-header">
+            <div>
+              <h3 className="gallery-tool-name">{section.tool}</h3>
+              <p className="gallery-tool-subtitle">{section.subtitle}</p>
+            </div>
+          </div>
 
-      {/* Image strip */}
-      <div className="grid" style={{marginBottom: "3%"}} aria-label={`${section.tool} images`}>
-        {(section.images ?? []).map((img, i) => (
-          <button
-            key={`${section.id}-img-${i}`}
-            type="button"
-            className="gallery-imgcard"
-            // onClick={() => setOpenImage(img)}
-          >
-            <img className="gallery-img" src={img.src} alt={img.alt} />
-          </button>
-        ))}
-      </div>
+          <p className="gallery-tool-desc">{section.description}</p>
 
-      {/* Toggles */}
-      <div className="gallery-toggles">
-        {(section.toggles ?? []).map((t, i) => (
-          <details key={`${section.id}-toggle-${i}`} className="gallery-toggle">
-            <summary className="gallery-summary">
-              <span>{t.title}</span>
-            </summary>
-
-            <ul className="gallery-list">
-              {(t.items ?? []).map((item, j) => (
-                <li key={`${section.id}-item-${i}-${j}`}>{item}</li>
-              ))}
-            </ul>
-          </details>
-        ))}
-      </div>
-
-      {/* Lightbox */}
-      {openImage && (
-        <div
-          className="gallery-lightbox"
-          role="dialog"
-          aria-modal="true"
-          onMouseDown={(e) => e.target === e.currentTarget && setOpenImage(null)}
-        >
-          <div className="gallery-lightbox-inner">
-            <div className="gallery-lightbox-top">
-              <div className="gallery-lightbox-title">{openImage.alt}</div>
+          <div className="grid" style={{ marginBottom: "3%",
+            }}>
+            {(section.images ?? []).map((img, i) => (
               <button
+                style={{aspectRatio: 4/3, padding:10, overflow:"hidden" }}
+                key={`${section.id}-img-${i}`}
                 type="button"
-                className="gallery-lightbox-close"
-                onClick={() => setOpenImage(null)}
+                className="gallery-imgcard"
+                onClick={() => setOpenImage(img)}
               >
-                ×
+                <img className="gallery-img" style={{width:"100%", height:"100%", objectFit: "cover", display:"block"}} src={img.src} alt={img.alt} />
               </button>
-            </div>
+            ))}
+          </div>
 
-            <div className="gallery-lightbox-imgwrap">
-              <img src={openImage.src} alt={openImage.alt} />
-            </div>
+          <div className="gallery-toggles">
+            {(section.toggles ?? []).map((t, i) => (
+              <details key={`${section.id}-toggle-${i}`} className="gallery-toggle">
+                <summary className="gallery-summary">{t.title}</summary>
+                <ul className="gallery-list">
+                  {t.items.map((item, j) => (
+                    <li key={`${section.id}-item-${i}-${j}`}>{item}</li>
+                  ))}
+                </ul>
+              </details>
+            ))}
           </div>
         </div>
       )}
+
+
+
+      {isOpen && (
+        <div
+          className="card gallery-fullview"
+          role="dialog"
+          aria-modal="true"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setOpenImage(null);
+          }}
+          style={{position: "relative",}}
+        >
+          <button
+            type="button"
+            className="sidebar-search-result"
+            onClick={() => setOpenImage(null)}
+            aria-label="Close image"
+            style={{ position: "absolute", right: "8%", padding:"3px", paddingBottom:"0",  }}
+          >
+           <img src="/icons/closeIcon.svg" alt="" className="close-icon"/>
+          </button>
+
+          <img
+            src={openImage.src}
+            alt={openImage.alt}
+            onMouseDown={(e) => e.stopPropagation()}
+            style={{ width: "70%", maxHeight: "70vh",
+                    objectFit: "contain", display: "block", margin: "0 auto" }}
+          />
+        </div>
+      )}
+
     </div>
   );
 }
