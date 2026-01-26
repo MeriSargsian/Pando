@@ -14,8 +14,10 @@
       "images": [
         { "src": "images/Aura.png", "alt": "Aura layered map view" },
         { "src": "images/Aura2.png", "alt": "Crime hotspots overlay" },
-        { "src": "images/Aura3.png", "alt": "Heatmap gradient and density" }
-      ],
+        { "src": "images/Aura3.png", "alt": "Heatmap gradient and density" },
+      { "src": "/images/PolyCam.png", "alt": "Site capture using phone" },
+        { "src": "/images/PolyCam2.png", "alt": "360 scan reference view" }
+     ],
       "toggles": [
         {
           "title": "Data Exploration",

@@ -1,52 +1,213 @@
-.gallery-scroll {
-  display: flex;
-  gap: 28px;
+/* ToolGallerySection.css */
 
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-
-  padding-bottom: 12px;
-  -webkit-overflow-scrolling: touch;
+/* ===== Tool Card Wrapper ===== */
+.gallery-section-wrapper {
+  position: relative;
 }
 
-.gallery-scroll::-webkit-scrollbar {
-  height: 8px;
-}
-
-.gallery-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.gallery-scroll::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.25);
-  border-radius: 4px;
-}
-
-.gallery-imgcard {
-  flex: 0 0 320px;        
-  scroll-snap-align: start;
+/* ===== Carousel Wrapper: show only 3 cards at a time ===== */
+/* Adjust these two values if you change card width/gap */
+:root {
+  --gallery-card-width: 360px;
+  --gallery-gap: 28px;
 }
 
 .gallery-scroll-wrapper {
   position: relative;
+  max-width: calc(3 * var(--gallery-card-width) + 2 * var(--gallery-gap));
+  overflow: hidden; /* hides the rest so only 3 appear */
+  margin-top: 14px;
 }
 
+/* ===== Horizontal scroller ===== */
+.gallery-scroll {
+  display: flex;
+  gap: var(--gallery-gap);
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  padding: 6px 2px 14px;
+  scroll-snap-type: x mandatory;
+}
+
+/* Optional: nicer scrollbar */
+.gallery-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.gallery-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+}
+.gallery-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ===== Image card with a white frame + crop ===== */
+.gallery-imgcard {
+  flex: 0 0 var(--gallery-card-width);
+  aspect-ratio: 4 / 3;
+
+  padding: 18px;          /* white “mat” */
+  background: #f3f3f1;    /* frame color */
+  border-radius: 6px;
+
+  border: none;
+  cursor: pointer;
+
+  overflow: hidden;       /* IMPORTANT: enables cropping */
+  scroll-snap-align: start;
+
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.gallery-imgcard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* crops to fit */
+  display: block;
+  border-radius: 4px;
+}
+
+/* ===== Arrow buttons ===== */
+.gallery-scroll-wrapper {
+  margin-top: 14px;
+  position: relative;
+}
+
+/* NEW container that arrows are relative to */
+.gallery-scroll-inner {
+  position: relative;
+}
+
+/* arrows now float ON TOP of images */
 .gallery-scroll-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 2;
+  z-index: 20;
 
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+
   border: none;
-
-  background: rgba(0,0,0,0.55);
+  background: rgba(10, 14, 25, 0.7);
+  backdrop-filter: blur(6px);
   color: white;
+
+  display: grid;
+  place-items: center;
   cursor: pointer;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
 }
 
-.gallery-scroll-btn.left { left: -18px; }
-.gallery-scroll-btn.right { right: -18px; }
+/* slightly overlap the cards */
+.gallery-scroll-btn.left {
+  left: 10px;
+}
+
+.gallery-scroll-btn.right {
+  right: 10px;
+}
+
+/* hover polish */
+.gallery-scroll-btn:hover {
+  background: rgba(20, 24, 40, 0.9);
+}
+
+
+/* ===== Toggles ===== */
+.gallery-toggles {
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.gallery-toggle {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px 12px;
+}
+
+.gallery-summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.gallery-toggle summary::-webkit-details-marker {
+  display: none;
+}
+
+.gallery-chevron {
+  opacity: 0.7;
+  transition: transform 160ms ease;
+}
+
+.gallery-toggle[open] .gallery-chevron {
+  transform: rotate(180deg);
+}
+
+.gallery-list {
+  margin: 10px 0 0 18px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* ===== Full-view (replaces card content) ===== */
+.gallery-fullview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 70vh;
+  position: relative;
+  padding: 32px;
+}
+
+.gallery-fullview-img {
+  width: 70%;
+  max-height: 70vh;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.gallery-fullview-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  cursor: pointer;
+
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.close-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
